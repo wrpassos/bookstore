@@ -1,5 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using ProductService.Persistence;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using ProductService.Context;
+using ProductService.Models;
 
 namespace ProductService.Controllers
 {
@@ -9,15 +13,26 @@ namespace ProductService.Controllers
         /// <summary>
         /// 
         /// </summary>
-        private readonly IProductRepository _productRepository;
-        
+        private readonly ProductContext _context;
+
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="productRepository"></param>
-        public ProductController(IProductRepository productRepository)
+        /// <param name="context"></param>
+        public ProductController(ProductContext context)
         {
-            _productRepository = productRepository;
+            _context = context;
         }
+
+        public void Add(Product Product)
+        {
+            _context.Add(Product);
+            _context.SaveChanges();
+        }
+
+//        public IEnumerable<Product> GetAll()
+//        {
+//            return _context.Products.Include(c => c.Category).ToList();
+//        }
     }
 }
